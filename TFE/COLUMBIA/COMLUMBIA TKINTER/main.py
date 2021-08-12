@@ -168,7 +168,7 @@ def game(user_ID):
 
             if multiplicateur >= multiplicateur_MAX:#si il a perdu
 
-                winsound.PlaySound("F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\explosion.wav", winsound.SND_ASYNC)
+                winsound.PlaySound("sources\explosion.wav", winsound.SND_ASYNC)
                 labelexplosion.image=img_explosion
                 labellaunch.pack_forget()
                 labelexplosion.pack(side=LEFT, fill="x", expand=False)
@@ -185,17 +185,17 @@ def game(user_ID):
 
     # ---------------IMAGE DU JEU-------------------
 
-    img_WAITING = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\WAITING.png")
+    img_WAITING = PhotoImage(file="sources\WAITING.png")
     labelLEFT = Label(root, image=img_WAITING, bg="#241F2B", anchor=W)
     labelLEFT.image = img_WAITING  # Association de l image au widget
     labelLEFT.pack(side=LEFT, fill="x", expand=False)
 
-    img_explosion = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\BOOM.png")
+    img_explosion = PhotoImage(file="sources\BOOM.png")
     labelexplosion = Label(root, image=img_explosion, bg="#282828")
     
     
     labellaunch = GifAnimatedLabel(root, bg="#241F2B", anchor=W,
-                                 filename="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\GIF_LAUCHER_REPEAR.gif",
+                                 filename="sources\GIF_LAUCHER_REPEAR.gif",
                                  speed=100)
 
     labeleject = GifAnimatedLabel(root, bg="#241F2B", anchor=W,
@@ -278,7 +278,7 @@ def game(user_ID):
 
         hasmoney=modif_portefeuilles(user_ID,-float(Mise.get())) #débite x euros du compte lorsqu'il appuie sur BET
 
-        winsound.PlaySound("F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\LAUNCHMUSIC.wav", winsound.SND_ASYNC) #modifier mp3 en wav , demarrer la musique plus tard et modifier le volume car trop fort
+        winsound.PlaySound("sources\LAUNCHMUSIC.wav", winsound.SND_ASYNC) #modifier mp3 en wav , demarrer la musique plus tard et modifier le volume car trop fort
 
         nonlocal user
         user = getuser(user_ID)
@@ -336,13 +336,13 @@ def Historique():
     win_historique = Toplevel()
     win_historique.geometry("1000x330")
     win_historique.title("Historique de jeu")
-    win_historique.iconbitmap("F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\ICON.ico")
+    win_historique.iconbitmap("sources\ICON.ico")
     win_historique.config(bg="#241F2B")
     #win_historique.resizable(height=False, width=False)
 
     img = qrcode.make('http://www.ifosupwavre.be/')#tuto de graven
     img.save('qrcode.png')
-    imgqr = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\qrcode.png")
+    imgqr = PhotoImage(file="qrcode.png")
     labelLEFT = Label(win_historique, image=imgqr, bg="#241F2B", anchor=W)
     labelLEFT.image = imgqr  # Association de l image au widget
     labelLEFT.pack(side=RIGHT, fill="x", expand=True)
@@ -366,13 +366,10 @@ def reglement_window():
     for c in root.winfo_children():
         c.destroy()
 
-
-
-
         # root.config(bg="#241F2B")
 
         # BACKGROUND + REGLES
-        imgBG = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\REGLEDUJEU.png")
+        imgBG = PhotoImage(file="sources\REGLEDUJEU.png")
         canvas = Canvas()
         canvas.create_image(imgBG.width() / 2, imgBG.height() / 2, image=imgBG)
         labell = Label(root, image=imgBG)
@@ -471,7 +468,7 @@ def connection_window():
     win_connection = Toplevel()
     win_connection.geometry("600x330")
     win_connection.title("Connection")
-    win_connection.iconbitmap("F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\ICON.ico")
+    win_connection.iconbitmap("sources\ICON.ico")
     win_connection.config(bg="#241F2B")
     win_connection.resizable(height=False, width=False)
 
@@ -544,10 +541,10 @@ def windows_menu():
 
     winsound.PlaySound(None, winsound.SND_PURGE)
 
-    winsound.PlaySound('F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\musicmenu.wav', winsound.SND_ASYNC)
+    winsound.PlaySound('sources\musicmenu.wav', winsound.SND_ASYNC)
     # ------image de fond
 
-    imgBG = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\MENU PRINCIPAL.png")
+    imgBG = PhotoImage(file="sources\MENU PRINCIPAL.png")
     canvas = Canvas()
     canvas.create_image(imgBG.width() / 2, imgBG.height() / 2, image=imgBG)
     labell = Label(root, image=imgBG)
@@ -596,11 +593,11 @@ def windows_menu():
 root = Tk()
 root.geometry("1366x768")
 root.title("Columbia")
-root.iconbitmap("F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\ICON.ico")
+root.iconbitmap("sources\ICON.ico")
 root.resizable(height=False, width=False)
 
 # ------image de font
-img_bg = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\PRESS_START.png")
+img_bg = PhotoImage(file="sources\PRESS_START.png")
 label = Label(root, image=img_bg)
 label.pack()
 

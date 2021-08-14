@@ -14,6 +14,7 @@ import winsound
 
 import PIL
 import qrcode
+from tkinter import messagebox
 
 #from .GIFANIMATED import *
 
@@ -58,14 +59,13 @@ class GifAnimatedLabel(Label): #~copié collé d'internet
 #------------------------------------------------Autre DEF---------------------------------------------------------
 
 
-
 def return_valeur(cursor, row): # return la liste du scoreboard
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
-conn.row_factory = return_valeur
+conn.row_factory = return_valeur#row_factory change la table en dictionnaire
 
 cursor = conn.cursor()
 
@@ -107,13 +107,17 @@ def getuser(user_ID):#renvois les donnée de l'user pour l'afficher par apres
 
 
 def comptecreation(nom, mdp, mdp2):
+
     if mdp == mdp2:
+
         try:  # si erreur , on va pouvoir les afficher
             cursor.execute('''INSERT INTO users(
                pseudo, mdp) VALUES 
                ('{}','{}')'''.format(nom, mdp))  # prend le text et insert le nom et mdp dans accolade
             conn.commit()
+            messagebox.showinfo('Success', 'Votre compte à bien été crée')
         except Exception as E:  # si execute lance une erreur , on affiche l'erreur
+            messagebox.showerror('Error','Une erreur est survenue')
             print(E)
 
 
@@ -338,7 +342,7 @@ def Historique():
     win_historique.title("Historique de jeu")
     win_historique.iconbitmap("sources\ICON.ico")
     win_historique.config(bg="#241F2B")
-    #win_historique.resizable(height=False, width=False)
+    win_historique.resizable(height=False, width=False)
 
     img = qrcode.make('http://www.ifosupwavre.be/')#tuto de graven
     img.save('qrcode.png')
@@ -388,18 +392,9 @@ def reglement_window():
     frame_reglement.place(x=470, y=25)
 
 
-def comptecree():
-    pseudo_comptecree = pseudo_creecompte_entry.get()
-    mdp_comptecree = mdp_creecompte_entry.get()
-    File_comptecree_pseudo = os.listdir()
-    if str(pseudo_comptecree) + ".txt" in File_comptecree_pseudo:
-        print("Erreur le nom d'utilisateur est déja prit")
-
-    pass
-
 
 def framecreecompte(frame_connection, win_connection):
-    frame_connection.destroy()
+    frame_connection.destroy()#detruit la frame connection
 
     # CREE UN COMPTE FRAME
     # frame menu connection pseudo mdp
@@ -454,6 +449,15 @@ def framecreecompte(frame_connection, win_connection):
     espace.grid(row=7, column=0)
 
     # Bouton crée compte
+    def retour_connection():#detruit la fenetre et reouvre une autre (car la frame connection a ete detruite et je ne sais pas comment la faire reapparaitre
+        win_connection.destroy()
+        connection_window()
+
+
+    creecompte_retour = Button(frame_creecompte, text="Retour", font=("American Captain", 20),
+                                      bg="#FCA627", fg="#241F2B", width=15, border=0,
+                                      command=retour_connection)
+    creecompte_retour.grid(row=7, column=0)
 
     creecompte_connection_bt = Button(frame_creecompte, text="Cree mon compte", font=("American Captain", 20),
                                       bg="#FCA627", fg="#241F2B", width=25, border=0,
@@ -462,11 +466,15 @@ def framecreecompte(frame_connection, win_connection):
     frame_creecompte.pack(expand=YES)
 
 
+
+
+
+
 # fenetre conection
 def connection_window():
     # creation fenetre
     win_connection = Toplevel()
-    win_connection.geometry("600x330")
+    win_connection.geometry("600x340")
     win_connection.title("Connection")
     win_connection.iconbitmap("sources\ICON.ico")
     win_connection.config(bg="#241F2B")
@@ -502,6 +510,7 @@ def connection_window():
                       width=25, border=0,show="*")
     mdp_entry.grid(row=4, column=1)
 
+
     # ajout d'un espace
     espace = Label(frame_connection, text="", bg="#241F2B", height=1)
     espace.grid(row=5, column=0)
@@ -510,7 +519,13 @@ def connection_window():
     def Log(): # login regarde si utilisateur et lance le jeu
         user=login(Login.get(), Mdp.get()) #stock les données dans une variable
         if user:
+            messagebox.showinfo('Success','Vous etes bien connecté, bon jeu !!')
             game(user["ID"])
+
+        else:
+            messagebox.showerror('Error','Une erreur est survenue')
+
+
 
 
     Login_connection_bt = Button(frame_connection, text="Login", font=("American Captain", 20), bg="#FCA627",
@@ -531,6 +546,8 @@ def connection_window():
                            command=lambda: framecreecompte(frame_connection, win_connection))
     creecompte_bt.grid(row=8, column=1)
     frame_connection.pack(expand=YES)
+
+
 
 
 def windows_menu():
@@ -589,7 +606,6 @@ def windows_menu():
     can_imgfont.create_image(0,0, anchor=NW, image=imgfont)
     can_imgfont.place(x=0,y=100)"""
 
-
 root = Tk()
 root.geometry("1366x768")
 root.title("Columbia")
@@ -600,9 +616,6 @@ root.resizable(height=False, width=False)
 img_bg = PhotoImage(file="sources\PRESS_START.png")
 label = Label(root, image=img_bg)
 label.pack()
-
-
-
 
 pressstart = Button(root, text="Commencer", font=("American Captain", 40), bg="#DCD5C3", fg="#FD8A2D", border=7,
                     relief=RAISED, activebackground="#FD8A2D", command=windows_menu)

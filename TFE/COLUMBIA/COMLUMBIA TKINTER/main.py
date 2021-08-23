@@ -540,7 +540,7 @@ def windows_menu():
     bt_regle.pack(pady=0)
 
     # ---Option
-    bt_Option = Button(frame_menu, text="=Invite=", font=("American Captain", 40), bg="#241F2B", fg="White", border=0,
+    bt_Option = Button(frame_menu, text="=Guest=", font=("American Captain", 40), bg="#241F2B", fg="White", border=0,
                        command=lambda :game(user_ID=4))
     bt_Option.pack()
 

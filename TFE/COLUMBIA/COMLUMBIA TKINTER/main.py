@@ -7,16 +7,13 @@
 
 #-------------------------------------LES IMPORTS DE MODULES----------------------------------------
 from tkinter import *
-import os
+from tkinter import messagebox
 import sqlite3
+#from .GIFANIMATED import *
+
 import random
 import winsound
-
-import PIL
 import qrcode
-from tkinter import messagebox
-
-#from .GIFANIMATED import *
 
 
 # --------------------------------connection sqlite base de donnée---------------------------------------------
@@ -69,10 +66,6 @@ conn.row_factory = return_valeur#row_factory change la table en dictionnaire
 
 cursor = conn.cursor()
 
-def msgerreur():
-    #https://docs.python.org/fr/3/library/tkinter.messagebox.html
-    pass
-
 #--------------------------------------------------def DATA BASE------------------------------------------------------
 
 def modif_portefeuilles(ID, montant):
@@ -83,8 +76,6 @@ def modif_portefeuilles(ID, montant):
     if user["porte_feuilles"] + montant <0:#si le contenu du porte feuille est plus petit que 0 , erreur
 
         return False
-
-
 
     cursor.execute(
         '''UPDATE users SET porte_feuilles = {} WHERE ID = {} '''.format(user["porte_feuilles"] + montant,ID))
@@ -131,14 +122,6 @@ def recup_score():
     ORDER BY S.gains DESC LIMIT 5''')
     return cursor.fetchall()#renvoit la liste de résultats
 
-"""def recuphistorique(ID_users,gains,multiplicateur): #futur page historique
-
-    cursor.execute('''SELECT * FROM users join scores s on users.ID = s.ID_users
-        ORDER BY S.gains DESC LIMIT 50''')
-    return cursor.fetchall()  # renvoit la liste de l'historique du joueur"""
-
-
-
 #--------------------------------------------------def JEU------------------------------------------------------
 
 def game(user_ID):
@@ -146,8 +129,6 @@ def game(user_ID):
         c.destroy()
 
     winsound.PlaySound(None, winsound.SND_ASYNC)
-
-
 
     user = getuser(user_ID)
 
@@ -160,7 +141,7 @@ def game(user_ID):
 
         nonlocal multiplicateur  # donne la possibilité de modif le multiplicateur
         multiplicateur = multiplicateur + 0.001
-        print(multiplicateur)
+        print(multiplicateur)#pour le test
         multiplicateur_TEXT["text"] = "{:.2f}".format(multiplicateur)#"{:.2f}" = juste 2 décimales apres la virgule
 
         if multiplicateur <= multiplicateur_MAX and not jumped:#si le multiplicateur est plus petit ou egale que le multiplicateur max ET n'as pas encore sauté
@@ -176,8 +157,6 @@ def game(user_ID):
                 labelexplosion.image=img_explosion
                 labellaunch.pack_forget()
                 labelexplosion.pack(side=LEFT, fill="x", expand=False)
-
-
 
 
     BGRIGHT = PhotoImage(file="sources\gameright.png")
@@ -236,12 +215,8 @@ def game(user_ID):
     collect = Label(root, text="coming soon", font=("Arial", 9), bg="white", fg="black")
     collect.place(x=1050, y=517)
 
-
-
-
     pseudolabel = Label(root, text="Pseudo                   Porte-feuilles", font=("American Captain",15),bg="#282828", fg="#FD8A2D")
     pseudolabel.place(x=1015, y=385)
-
 
     userlabel = Label(root, text=user["pseudo"], font=("American Captain", 20), bg="#282828", fg="white")
     userlabel.place(x=1015,y=415)
@@ -252,12 +227,9 @@ def game(user_ID):
 
     def Jump():
 
-
-
         labellaunch.pack_forget()#retire l'ancienne image
 
         labeleject.pack(side=LEFT, fill="x", expand=False)
-
 
         btnBET['text'] = 'BET'
         btnBET['command'] = start  # click and new Def
@@ -274,8 +246,6 @@ def game(user_ID):
         user = getuser(user_ID)
 
         moneylabel['text'] = str("{:.2f}".format(user["porte_feuilles"]))
-
-
 
 
     def start():
@@ -306,14 +276,12 @@ def game(user_ID):
             labellaunch.pack(side=LEFT, fill="x", expand=False)
             labelexplosion.pack_forget()
 
-
             boucle1mili()
 
 
     def playgame():                                                             #erreur
 
         winsound.PlaySound(None, winsound.SND_ASYNC)
-
 
     btnBET = Button(root, text="BET", font=("Nasalization", 30),width=6,height=1, bg="#FD8A2D", fg="#241F2B",activebackground='#FD8A2D',
                     border=0, command=lambda: start())
@@ -330,7 +298,6 @@ def game(user_ID):
     btnhistorique = Button(root, text="Historique", font=("American Captain", 12), bg="#95C4FB", fg="#241F2B", width=9,
                       border=0, command=Historique)
     btnhistorique.place(x=1075,y=700)
-
 
 #--------------------------------------------------------MENU------------------------------------------------------
 
@@ -361,15 +328,10 @@ def Historique():
     text.place(x=400, y=50)
 
 
-
-
-
-
 def reglement_window():
-    # _____Permet de changer de page sans changer de fenetre (detruit les widget de l'ancienne)
+    # _____Permet de changer de page sans changer de fenetre (detruit les widgets de l'ancienne)
     for c in root.winfo_children():
         c.destroy()
-
         # root.config(bg="#241F2B")
 
         # BACKGROUND + REGLES
@@ -392,7 +354,6 @@ def reglement_window():
     frame_reglement.place(x=470, y=25)
 
 
-
 def framecreecompte(frame_connection, win_connection):
     frame_connection.destroy()#detruit la frame connection
 
@@ -404,7 +365,7 @@ def framecreecompte(frame_connection, win_connection):
     Mdp2 = StringVar()
 
     frame_creecompte = Frame(win_connection, bg="#241F2B")
-    connection_text = Label(frame_creecompte, text="Cree un compte", font=("American Captain", 50), bg="#241F2B",
+    connection_text = Label(frame_creecompte, text="Creer un compte", font=("American Captain", 50), bg="#241F2B",
                             fg="#95C4FB")
     connection_text.grid(row=0, column=1)
     Pseudo = Label(frame_creecompte, text="Pseudo: ", font=("American Captain", 20), bg="#241F2B", fg="white", border=0)
@@ -448,6 +409,7 @@ def framecreecompte(frame_connection, win_connection):
     espace = Label(frame_creecompte, text="", bg="#241F2B", height=1)
     espace.grid(row=7, column=0)
 
+
     # Bouton crée compte
     def retour_connection():#detruit la fenetre et reouvre une autre (car la frame connection a ete detruite et je ne sais pas comment la faire reapparaitre
         win_connection.destroy()
@@ -459,16 +421,11 @@ def framecreecompte(frame_connection, win_connection):
                                       command=retour_connection)
     creecompte_retour.grid(row=7, column=0)
 
-    creecompte_connection_bt = Button(frame_creecompte, text="Cree mon compte", font=("American Captain", 20),
+    creecompte_connection_bt = Button(frame_creecompte, text="Creer mon compte", font=("American Captain", 20),
                                       bg="#FCA627", fg="#241F2B", width=25, border=0,
                                       command=lambda: comptecreation(pseudo.get(), Mdp.get(), Mdp2.get()))
     creecompte_connection_bt.grid(row=7, column=1)
     frame_creecompte.pack(expand=YES)
-
-
-
-
-
 
 # fenetre conection
 def connection_window():
@@ -510,13 +467,12 @@ def connection_window():
                       width=25, border=0,show="*")
     mdp_entry.grid(row=4, column=1)
 
-
     # ajout d'un espace
     espace = Label(frame_connection, text="", bg="#241F2B", height=1)
     espace.grid(row=5, column=0)
 
     # Bouton Login
-    def Log(): # login regarde si utilisateur et lance le jeu
+    def Log(): # login regarde si utilisateur et lance le jeu + affiche un message pop up si réussi ou pas
         user=login(Login.get(), Mdp.get()) #stock les données dans une variable
         if user:
             messagebox.showinfo('Success','Vous etes bien connecté, bon jeu !!')
@@ -524,8 +480,6 @@ def connection_window():
 
         else:
             messagebox.showerror('Error','Une erreur est survenue')
-
-
 
 
     Login_connection_bt = Button(frame_connection, text="Login", font=("American Captain", 20), bg="#FCA627",
@@ -541,13 +495,11 @@ def connection_window():
 
     # Bouton crée un compte
 
-    creecompte_bt = Button(frame_connection, text="Cree un compte", font=("American Captain", 20), bg="#FCA627",
+    creecompte_bt = Button(frame_connection, text="Creer un compte", font=("American Captain", 20), bg="#FCA627",
                            fg="#241F2B", width=25, border=0,
                            command=lambda: framecreecompte(frame_connection, win_connection))
     creecompte_bt.grid(row=8, column=1)
     frame_connection.pack(expand=YES)
-
-
 
 
 def windows_menu():
@@ -588,7 +540,7 @@ def windows_menu():
     bt_regle.pack(pady=0)
 
     # ---Option
-    bt_Option = Button(frame_menu, text="=test=", font=("American Captain", 40), bg="#241F2B", fg="White", border=0,
+    bt_Option = Button(frame_menu, text="=Invite=", font=("American Captain", 40), bg="#241F2B", fg="White", border=0,
                        command=lambda :game(user_ID=4))
     bt_Option.pack()
 
@@ -600,7 +552,7 @@ def windows_menu():
     # ------boite du menu position et affichage
     frame_menu.place(x=700, y=250)
 
-    # ------image de font ((((J'ai trouvé mieux !!!)
+    # ------image de fond ((((J'ai trouvé mieux !!!)
     """can_imgfont = Canvas(app,width=1366, height=768,bg="#241F2B")
     imgfont = PhotoImage(file="F:\PHYTON CODE\TFE\COLUMBIA\COMLUMBIA TKINTER\sources\MENU PRINCIPAL.png")
     can_imgfont.create_image(0,0, anchor=NW, image=imgfont)
